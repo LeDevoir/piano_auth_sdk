@@ -1,0 +1,21 @@
+{
+    "name": "ledevoir/piano_auth_service_sdk",
+    "description": "SDK to interact with piano auth service",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "pbourdeau",
+            "email": "pbourdeau@ledevoir.com"
+        }
+    ],
+    "require": {
+        "php": ">= 7.1",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "LeDevoir\\PianoAuthSDK\\": "src/"
+        }
+    }
+}
