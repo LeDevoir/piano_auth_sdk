@@ -1,5 +1,5 @@
 {
-    "name": "ledevoir/piano_auth_service_sdk",
+    "name": "ledevoir/piano-auth-sdk",
     "description": "SDK to interact with piano auth service",
     "type": "library",
     "license": "MIT",
