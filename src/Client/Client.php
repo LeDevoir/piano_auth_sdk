@@ -91,17 +91,20 @@ class Client
     ): array {
         try {
             $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($curl, CURLOPT_PORT, $port);
 
-            curl_setopt($curl, CURLOPT_TIMEOUT, 5);
-            curl_setopt($curl, CURLOPT_CONNECTTIMEOUT,3);
-
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_HEADER, false);
+            curl_setopt_array($curl,
+                [
+                    CURLOPT_URL => $url,
+                    CURLOPT_PORT =>  $port,
+                    CURLOPT_HTTPHEADER => $headers,
+                    CURLOPT_POST => true,
+                    CURLOPT_POSTFIELDS => json_encode($data),
+                    CURLOPT_TIMEOUT => 5,
+                    CURLOPT_CONNECTTIMEOUT => 3,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_HEADER => false
+                ]
+            );
 
             $response = curl_exec($curl);
 
