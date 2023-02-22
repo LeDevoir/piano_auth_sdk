@@ -2,6 +2,9 @@
 
 namespace LeDevoir\PianoAuthSDK\Client;
 
+use LeDevoir\PianoAuthSDK\Responses\LogoutResponse;
+use LeDevoir\PianoAuthSDK\Responses\TokenResponse;
+
 class Client
 {
     /**
@@ -31,14 +34,14 @@ class Client
      * Generate a Piano user access token by email
      *
      * @param string $email
-     * @return bool|string
+     * @return TokenResponse
      * @throws \Exception
      */
-    public function generateToken(string $email)
+    public function generateToken(string $email): TokenResponse
     {
         $url = sprintf('%s%s', $this->baseUrl, '/piano/generateToken/email');
 
-        return $this->post(
+        $responseData = $this->post(
             $url,
             $this->port,
             [
@@ -46,17 +49,20 @@ class Client
             ],
             $this->defaultHeaders
         );
+
+        return new TokenResponse($responseData);
     }
 
     /**
      * @param string $accessToken
-     * @return bool|string
+     * @return LogoutResponse
+     * @throws \Exception
      */
-    public function logout(string $accessToken)
+    public function logout(string $accessToken): LogoutResponse
     {
         $url = sprintf('%s%s', $this->baseUrl, '/piano/logout');
 
-        return $this->post(
+        $responseData = $this->post(
             $url,
             $this->port,
             [
@@ -64,6 +70,8 @@ class Client
             ],
             $this->defaultHeaders
         );
+
+        return new LogoutResponse($responseData);
     }
 
     /**
@@ -73,14 +81,14 @@ class Client
      * @param array $data
      * @param array $headers
      * @param int $port
-     * @return bool|string
+     * @return array
      */
     private function post(
         string $url,
         int $port,
         array $data = [],
         array $headers = []
-    ){
+    ): array {
         try {
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_URL, $url);
@@ -95,15 +103,13 @@ class Client
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_HEADER, false);
 
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-
             $response = curl_exec($curl);
-            if (curl_error($curl)) {
-                /** Do something here ? */
+
+            if (!$response) {
+                return [];
             }
 
-            return $response;
+            return json_decode($response, true);
         } catch (\Exception $exception) {
             throw $exception;
         } finally {
