@@ -112,7 +112,17 @@ class Client
                 return [];
             }
 
-            return json_decode($response, true);
+            $errorCode = !curl_errno($curl);
+            if ($errorCode) {
+                return [];
+            }
+
+            $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+            if ($http_code >= 400) {
+                return [];
+            }
+
+            return json_decode($response, true) ?? [];
         } catch (\Exception $exception) {
             throw $exception;
         } finally {
