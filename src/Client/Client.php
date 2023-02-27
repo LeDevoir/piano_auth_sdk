@@ -112,13 +112,14 @@ class Client
                 return [];
             }
 
-            $errorCode = !curl_errno($curl);
-            if ($errorCode) {
-                return [];
-            }
-
-            $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-            if ($http_code >= 400) {
+            /**
+             * If any unforeseen error occur or response code >= 400, return empty body
+             * Error handling will need to be improved if we need to have a different business logic by error code or message
+             */
+            if (
+                curl_errno($curl) ||
+                curl_getinfo($curl, CURLINFO_HTTP_CODE) >= 400
+            ) {
                 return [];
             }
 
