@@ -2,8 +2,8 @@
 
 namespace LeDevoir\PianoAuthSDK\Client;
 
-use LeDevoir\PianoAuthSDK\Responses\LogoutResponse;
-use LeDevoir\PianoAuthSDK\Responses\TokenResponse;
+use LeDevoir\PianoAuthSDK\Response\LogoutResponse;
+use LeDevoir\PianoAuthSDK\Response\TokenResponse;
 
 class Client
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace LeDevoir\PianoAuthSDK\Responses;
+namespace LeDevoir\PianoAuthSDK\Response;
 
-class TokenResponse
+class LogoutResponse
 {
     /**
      * @var array
@@ -15,10 +15,12 @@ class TokenResponse
     }
 
     /**
+     * Jti confirms logout has been successful
+     *
      * @return string
      */
-    public function getToken(): string
+    public function getJti(): string
     {
-        return $this->jsonData['data']['piano_token'] ?? '';
+        return $this->jsonData['data']['jti'] ?? '';
     }
 }
