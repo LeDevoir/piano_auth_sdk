@@ -109,21 +109,35 @@ class Client
             $response = curl_exec($curl);
 
             if (!$response) {
-                return [];
+                return [
+                    'error' => [
+                        'message' => 'request failed at curl execution',
+                        'code' => 666,
+                        'context' => [
+                            'url' => $url,
+                            'port' => $port
+                        ]
+                    ]
+                ];
             }
 
-            /**
-             * If any unforeseen error occur or response code >= 400, return empty body
-             * Error handling will need to be improved if we need to have a different business logic by error code or message
-             */
-            if (
-                curl_errno($curl) ||
-                curl_getinfo($curl, CURLINFO_HTTP_CODE) >= 400
-            ) {
-                return [];
+            $data = json_decode($response, true) ?? [];
+
+            if(!array_key_exists('error', $data) && !array_key_exists('data', $data)) {
+                return [
+                    'error' => [
+                        'message' => 'response data not matching expected error and success format (should start with a first-level key error or success)',
+                        'code' => 666,
+                        'context' => [
+                            'url' => $url,
+                            'port' => $port,
+                            'response_content' => $response
+                        ]
+                    ]
+                ];
             }
 
-            return json_decode($response, true) ?? [];
+            return $data;
         } catch (\Exception $exception) {
             throw $exception;
         } finally {
