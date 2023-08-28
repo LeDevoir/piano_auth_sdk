@@ -75,6 +75,35 @@ class Client
     }
 
     /**
+     * @param string $email
+     * @param string $firstName
+     * @param string $lastName
+     * @return TokenResponse
+     * @throws \Exception
+     */
+    public function passwordlessRegistration(
+        string $email,
+        string $firstName = '',
+        string $lastName = ''
+    )
+    {
+        $url = sprintf('%s%s', $this->baseUrl, '/piano/registration/passwordless');
+
+        $responseData = $this->post(
+            $url,
+            $this->port,
+            [
+                'email' => $email,
+                'first_name' => $firstName,
+                'last_name' => $lastName
+            ],
+            $this->defaultHeaders
+        );
+
+        return new TokenResponse($responseData);
+    }
+
+    /**
      * Send a non-secure POST (no TLS)
      *
      * @param string $url
