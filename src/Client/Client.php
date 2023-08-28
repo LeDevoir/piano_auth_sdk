@@ -74,6 +74,13 @@ class Client
         return new LogoutResponse($responseData);
     }
 
+    /**
+     * @param string $email
+     * @param string $firstName
+     * @param string $lastName
+     * @return TokenResponse
+     * @throws \Exception
+     */
     public function passwordlessRegistration(
         string $email,
         string $firstName = '',
