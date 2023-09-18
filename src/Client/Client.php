@@ -104,6 +104,29 @@ class Client
     }
 
     /**
+     * @param string $refreshToken
+     * @return TokenResponse
+     * @throws \Exception
+     */
+    public function refreshToken(
+        string $refreshToken
+    ): TokenResponse
+    {
+        $url = sprintf('%s%s', $this->baseUrl, '/piano/token/refresh');
+
+        $responseData = $this->post(
+            $url,
+            $this->port,
+            [
+                'refresh_token' => $refreshToken,
+            ],
+            $this->defaultHeaders
+        );
+
+        return new TokenResponse($responseData);
+    }
+
+    /**
      * Send a non-secure POST (no TLS)
      *
      * @param string $url

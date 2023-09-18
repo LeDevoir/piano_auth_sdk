@@ -17,8 +17,16 @@ class TokenResponse
     /**
      * @return string
      */
-    public function getToken(): string
+    public function getAccessToken(): string
     {
-        return $this->jsonData['data']['piano_token'] ?? '';
+        return $this->jsonData['data']['access_token'] ?? '';
+    }
+
+    /**
+     * @return string
+     */
+    public function getRefreshToken(): string
+    {
+        return $this->jsonData['data']['refresh_token'] ?? '';
     }
 }
