@@ -29,4 +29,12 @@ class TokenResponse
     {
         return $this->jsonData['data']['refresh_token'] ?? '';
     }
+
+    /**
+     * @return int
+     */
+    public function getExpiresIn(): int
+    {
+        return $this->jsonData['data']['expires_in'] ?? -1;
+    }
 }
