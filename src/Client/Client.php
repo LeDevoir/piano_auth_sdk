@@ -2,6 +2,7 @@
 
 namespace LeDevoir\PianoAuthSDK\Client;
 
+use Exception;
 use LeDevoir\PianoAuthSDK\Responses\LogoutResponse;
 use LeDevoir\PianoAuthSDK\Responses\TokenResponse;
 
@@ -33,11 +34,11 @@ class Client
     /**
      * Generate a Piano user access token by email
      *
-     * @param string $email
+     * @param int $profilId
      * @return TokenResponse
-     * @throws \Exception
+     * @throws Exception
      */
-    public function generateToken(string $email): TokenResponse
+    public function generateToken(int $profilId): TokenResponse
     {
         $url = sprintf('%s%s', $this->baseUrl, '/piano/generateToken/email');
 
@@ -45,7 +46,7 @@ class Client
             $url,
             $this->port,
             [
-                'email' => $email
+                'profil_id' => $profilId
             ],
             $this->defaultHeaders
         );
@@ -56,7 +57,7 @@ class Client
     /**
      * @param string $accessToken
      * @return LogoutResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function logout(string $accessToken): LogoutResponse
     {
@@ -75,17 +76,11 @@ class Client
     }
 
     /**
-     * @param string $email
-     * @param string $firstName
-     * @param string $lastName
+     * @param int $profilId
      * @return TokenResponse
-     * @throws \Exception
+     * @throws Exception
      */
-    public function passwordlessRegistration(
-        string $email,
-        string $firstName = '',
-        string $lastName = ''
-    )
+    public function passwordlessRegistration(int $profilId): TokenResponse
     {
         $url = sprintf('%s%s', $this->baseUrl, '/piano/registration/passwordless');
 
@@ -93,9 +88,7 @@ class Client
             $url,
             $this->port,
             [
-                'email' => $email,
-                'first_name' => $firstName,
-                'last_name' => $lastName
+                'profil_id' => $profilId
             ],
             $this->defaultHeaders
         );
@@ -106,7 +99,7 @@ class Client
     /**
      * @param string $refreshToken
      * @return TokenResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function refreshToken(
         string $refreshToken
@@ -176,8 +169,6 @@ class Client
             }
 
             return json_decode($response, true) ?? [];
-        } catch (\Exception $exception) {
-            throw $exception;
         } finally {
             curl_close($curl);
         }
